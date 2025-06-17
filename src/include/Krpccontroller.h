@@ -1,0 +1,25 @@
+#ifndef _Krpccontroller_H
+#define _Krpccontroller_H
+
+#include<google/protobuf/service.h>
+#include<string>
+//用于描述RPC调用的控制器
+//其主要作用是跟踪RPC方法的调用状态，错误信息并提供控制功能
+class Krpccontroller:public google::protobuf::RpcController
+{
+public:
+    Krpccontroller();
+    void Reset();
+    bool Failed() const;
+    std::string ErrorText() const;
+    void SetFailed(const std::string &reason);
+
+    //未实现功能
+    void StartCancel();
+    bool IsCanceled() const;
+    void NotifyOnCancel(google::protobuf::Closure* callback);
+private:
+    bool m_failed;//RPC方法执行过程中的状态
+    std::string m_errText;//RPC方法执行过程中的错误信息
+};
+#endif
